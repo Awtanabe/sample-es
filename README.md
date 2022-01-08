@@ -25,8 +25,11 @@
 - import: indexが無いとできない
   - Manga.__elasticsearch__.import
 
-## 実装
+## 実装 Product
 
+
+- 構成
+  - product, product_category
 - gem入れる
 - MangaSearchable作成
   - concernsに入れる
