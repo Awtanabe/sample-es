@@ -3,9 +3,18 @@ class ProductsController < ApplicationController
 
   # GET /products or /products.json
   def index
-    @products = Product.all
+    # @products = Product.all
+    @products = if search_word.present?
+                # Product.__elasticsearch__.search(search_word).per(5).records
+                Product.es_search(search_word).page(params[:page] || 1).per(5).records
+              else
+                Product.page(params[:page] || 1).per(5)
+              end
   end
 
+  def search_word
+    @search_word ||= params[:search_word]
+  end
   # GET /products/1 or /products/1.json
   def show
   end
