@@ -30,17 +30,23 @@
 
 - 構成
   - product, product_category
-- gem入れる
-- MangaSearchable作成
+    - mappingsに product
+    - product_category_nameなどに product_categoryの検索
+    - ※ multi_match でid, nameなどでやったらエラーに（id: integer, name:text）
+- 1.gem入れる
+- 2.MangaSearchable作成
   - concernsに入れる
   - 設定するモノ
-  - index名
-  - マッピング: 検索対象を決める
+  - .2-1 index名
+  - .2-2 マッピング: 検索対象を決める
     - include Elasticsearch::Modelで検索つないでいるのだろう
-    - as_indexed_jsonで渡す
-  - class_methods: モジュールのメソッド
-  - __elasticsearch__.xxxで色々できるみたい
-    - __elasticsearch__.searchとか
+  - .2-3 as_indexed_jsonで渡す
+  - .2-4 class_methods: モジュールのメソッド
+    - create_indexとか
+  - その他
+    - elasticsearch-rails, modelで下記が利用可能
+      - __elasticsearch__.xxxで色々できるみたい
+      - __elasticsearch__.searchとか
 
 - Manがでinclude
 
