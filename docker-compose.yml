@@ -1,0 +1,59 @@
+version: "3"
+services:
+  # Elasticsearch用のコンテナ
+  elasticsearch:
+    build: ./docker/es
+    environment:
+      - discovery.type=single-node
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    ports:
+      - 9200:9200
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+  # Kibana用のコンテナ
+  kibana:
+    # elasticsearchとkibanaのimageのバージョン番号を一致させる
+    image: docker.elastic.co/kibana/kibana:6.8.18
+    ports:
+      - 5601:5601
+    environment:
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+    depends_on:
+      - elasticsearch
+  # Postgres用のコンテナ
+  db:
+    image: postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - pgdata:/var/lib/postgresql
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+  # Rails用のコンテナ
+  rails:
+    build: .
+    command: bundle exec rails server -p 3000 -b '0.0.0.0'
+    depends_on:
+      - db
+      - elasticsearch
+    ports:
+      - 3000:3000
+    environment:
+      DATABASE_HOST: db
+    tty: true
+    stdin_open: true
+    volumes:
+      # delegatedによって一貫性を捨てパフォーマンスを重視
+      - .:/myapp:delegated
+# elasticsearchとdbで使うボリューム
+volumes:
+  esdata:
+  pgdata:

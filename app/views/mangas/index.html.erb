@@ -1,0 +1,50 @@
+<section class="hero is-info">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title">
+        漫画検索
+      </h1>
+    </div>
+  </div>
+</section>
+
+
+<div class="container" style="margin-top: 30px">
+  <%= form_tag(mangas_path, method: :get, class: "field has-addons has-addons-centered") do %>
+    <div class="control">
+      <%= text_field_tag :search_word, @search_word, class: "input", placeholder: "漫画を検索する" %>
+    </div>
+    <div class="control">
+      <%= submit_tag "検索", class: "button is-info" %>
+    </div>
+  <% end %>
+</div>
+
+<div class="container" style="margin-top: 50px">
+  <table class="table is-striped is-hoverable">
+    <thead class="has-background-info">
+      <tr>
+        <th class="has-text-white-bis">出版社</th>
+        <th class="has-text-white-bis">ジャンル</th>
+        <th class="has-text-white-bis">著者</th>
+        <th class="has-text-white-bis">タイトル</th>
+        <th class="has-text-white-bis">説明</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @mangas.each do |manga| %>
+        <tr>
+          <td><%= manga.publisher.name %></td>
+          <td><%= manga.category.name %></td>
+          <td><%= manga.author.name %></td>
+          <td><%= manga.title %></td>
+          <td><%= manga.description %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <br>
+  <%= paginate @mangas %>
+</div>

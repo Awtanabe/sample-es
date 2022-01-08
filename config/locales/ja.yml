@@ -1,0 +1,6 @@
+ja:
+  enums:
+    products:
+      status:
+        unpublished: '非公開'
+        published: '公開'
